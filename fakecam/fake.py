@@ -50,15 +50,19 @@ def get_frame(cap, background_scaled):
         frame[:,:,c] = frame[:,:,c]*mask + background_scaled[:,:,c]*inv_mask
     return frame
 
+# get environment variables for video devices
+video_dev_real = os.environ.get('VIDEO_DEV_REAL', '/dev/video0')
+video_dev_loopback = os.environ.get('VIDEO_DEV_LOOPBACK', '/dev/video2')
+
 # setup access to the *real* webcam
-cap = cv2.VideoCapture('/dev/video0')
+cap = cv2.VideoCapture(video_dev_real)
 height, width = 720, 1280
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 cap.set(cv2.CAP_PROP_FPS, 30)
 
 # setup the fake camera
-fake = pyfakewebcam.FakeWebcam('/dev/video2', width, height)
+fake = pyfakewebcam.FakeWebcam(video_dev_loopback, width, height)
 
 # load the virtual background
 background = cv2.imread("/data/background.jpg")

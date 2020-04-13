@@ -6,13 +6,38 @@ Benjamen Elder wrote a [blog post](https://elder.dev/posts/open-source-virtual-b
 This whole setup has been tested under Debian GNU/Linux, using Thinkpad T440p with an Intel i7-4900MQ CPU. 
 
 ## Prerequisite
+
 ### Docker
+
 You need to set up Docker. If you want GPU acceleration, you want to set up [Nvidia Container Toolkit](https://github.com/NVIDIA/nvidia-docker). There are a lot of guides on the Internet on how to set these up. I am not going to describe them here. Note that if you don't manage to set up Nvidia Container Toolkit, Tensorflow will fall back to CPU. This is in fact how I run mine - my GPU is too old for the current version of Tensorflow. 
 
+### ROCm
+
+#### Arch Linux
+
+```sh
+yay -S rocm-dkms
+```
+
+```sh
+sudo usermod -a -G video $(whoami)
+```
+
 ### V4l2loopback
+
+#### Debian/Ubuntu
+
 You need to install v4l2loopback. If you are on Debian Buster, you can do the following:
     
     sudo apt install v4l2loopback-dkms
+
+#### Arch Linux
+
+```sh
+yay -S v4l2loopback-dkms
+```
+
+#### Configure V4l2
 
 I added module options for v4l2loopback by creating ``/etc/modprobe.d/v4l2loopback.conf`` with the following content: 
 
